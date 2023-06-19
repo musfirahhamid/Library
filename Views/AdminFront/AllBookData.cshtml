@@ -1,0 +1,339 @@
+﻿@{
+ViewData["Title"] = "AllBookData";
+}
+
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+<h1>AllBookData</h1>
+
+<!-- Update Book  -->
+<div class="modal " id="updateBook">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Update Book</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal">
+</button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+<table class="table table-borderless text-center" id="tblUpdate">
+    <tr>
+        <td>
+            <input type="text" id="UpdateBookId" hidden readonly name="UpdateBookId" />
+        </td>
+    </tr>
+    <tr>
+        <td class="text-center">
+            <label class="fs-5">Title:</label>
+            <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="text" id="UpdateBookTitle" name="UpdateBookTitle" placeholder="Book Title" />
+        </td>
+    </tr>
+    <tr>
+        <td class="text-center">
+            <label class="fs-5">Author:</label>
+            <input class="form-control input-rounded text-center fs-4 w-75 mx-auto border border-dark" type="text" id="UpdateBookAuthor" name="UpdateBookAuthor" placeholder="Author Name" />
+        </td>
+    </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Condition:</label>
+                <input type="text" id="UpdateBookCondition" name="UpdateBookCondition" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Old or New" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Quantity:</label>
+                <input type="number" id="UpdateBookQuantity" name="UpdateBookQuantity" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"  />
+            </td>
+        </tr>
+    <tr>
+        <td class="text-center">
+            <label class="fs-5">Date&Time:</label>
+            <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="datetime-local" id="UpdateBookDate" name="UpdateBookDate" />
+        </td>
+    </tr>
+</table>
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-danger light" id="btnCancelBook" data-bs-dismiss="modal">Close</button>
+<button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateBook">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- Add Book-->
+<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#addBook">Add Publication</button>
+
+<div class="modal fade" id="addBook">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Add Book</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal">
+</button>
+</div>
+<div class="modal-body">
+
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="insertBook">
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Title:</label>
+                <input type="text" id="bookTitle" name="bookTitle" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Book Title" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Author:</label>
+                <input type="text" id="bookAuthor" name="bookAuthor" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Author Name" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Condition:</label>
+                <input type="text" id="bookCondition" name="bookCondition" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Old or New" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Quantity:</label>
+                <input type="number" id="bookQuantity" name="bookQuantity" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Date&Time:</label>
+                <input type="datetime-local" id="bookDateAdded" name="bookDateAdded" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" />
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddBook" name="btnAddPublication">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- list of All Book-->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+<div class="card-header">
+<h4 class="card-title">List of All Book</h4>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-responsive-md">
+    <thead>
+        <tr>
+            <th><strong>SrNO.</strong></th>
+            <th><strong>Book Title</strong></th>
+            <th><strong>Book Author</strong></th>
+            <th><strong>Condition</strong></th>
+            <th><strong>Quantity</strong></th>
+            <th><strong>Date</strong></th>
+            <th><strong></strong></th>
+        </tr>
+    </thead>
+    <tbody id="bookData">
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+var srN = 0;
+
+//Get All Books
+$.ajax({
+url: '/api/Book/GetAllBooks',
+type: 'GET',
+dataType: "json",
+success: function(data) {
+
+var trData = "";
+$.each(data, function(index, obj) {
+    srN += 1;
+    trData += `
+        <tr>
+            <td class='tdSrNo'>${srN}</td>
+            <td id="bookTitle${obj.id}">${obj.bookTitle}</td>
+            <td id="bookAuthor${obj.id}">${obj.bookAuthor}</td>
+            <td id="bookCondition${obj.id}">${obj.bookCondition}</td>
+            <td id="bookQuantity${obj.id}">${obj.bookQuantity}</td>
+            <td id="bookDateAdded${obj.id}">${obj.bookDateAdded}</td>
+            <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateBook' id='btnEdit${obj.id}'><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+        </tr>
+        `
+    $("#bookData").html(trData);
+})
+}
+
+})
+
+
+//Add Book
+$("#btnAddBook").click(function() {
+alert("added");
+var bookTitle = $("#bookAuthor").val();
+var bookAuthor = $("#bookAuthor").val();
+var bookCondition = $("#bookCondition").val();
+var bookQuantity = $("#bookQuantity").val();
+var bookDateAdded = $("#bookDateAdded").val();
+var obj = {
+"bookTitle":bookTitle,
+"bookAuthor":bookAuthor,
+"bookCondition":bookCondition,
+"bookQuantity":bookQuantity,
+"bookDateAdded":bookDateAdded
+}
+//alert(JSON.stringify(obj));
+$.ajax({
+url: '/api/Book/AddBook',
+type: "POST",
+'contentType': 'application/json',
+dataType: "json",
+data: JSON.stringify(obj),
+success: function(data) {
+srN += 1;
+$("#bookData").append(`
+<tr>
+        <td class='tdSrNo'>${srN}</td>
+        <td id="bookTitle${obj.id}">${obj.bookTitle}</td>
+        <td id="bookAuthor${obj.id}">${obj.bookAuthor}</td>
+        <td id="bookCondition${obj.id}">${obj.bookCondition}</td>
+        <td id="bookQuantity${obj.id}">${obj.bookQuantity}</td>
+        <td id="bookDateAdded${obj.id}">${obj.bookDateAdded}</td>
+        <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateBook' id='btnEdit'${obj.id}><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+    </tr>
+`)
+    $('.tdSrNo').each(function(index, obj) {
+        $(this).html(index + 1);
+    });
+$("#bookTitle").val("");
+$("#bookAuthor").val("");
+$("#bookCondition").val("");
+$("#bookQuantity").val("");
+$("#bookDateAdded").val("");
+}
+})
+})
+
+
+//Update Book
+$(document).on('click', '.btnEdit', function() {
+var bookId = $(this).attr('id');
+bookId = bookId.replace("btnEdit", "");
+//alert(bookId);
+var bookTitle = $("#bookTitle" + bookId).html();
+var bookAuthor = $("#bookAuthor" + bookId).html();
+var bookCondition = $("#bookCondition" + bookId).html();
+var bookQuantity = $("#bookQuantity" + bookId).html();
+var bookDateAdded = $("#bookDateAdded" + bookId).html();
+
+$("#UpdateBookId").val(bookId);
+$("#UpdateBookTitle").val(bookTitle);
+$("#UpdateBookAuthor").val(bookAuthor);
+$("#UpdateBookCondition").val(bookCondition);
+$("#UpdateBookQuantity").val(bookQuantity);
+$("#UpdateBookDate").val(bookDateAdded);
+})
+
+$("#btnUpdateBook").click(function() {
+var bookId= $("#UpdateBookId").val();
+var bookTitle = $("#UpdateBookTitle").val();
+var bookAuthor = $("#UpdateBookAuthor").val();
+var bookCondition = $("#UpdateBookCondition").val();
+var bookQuantity = $("#UpdateBookQuantity").val();
+var bookDateAdded = $("#UpdateBookDate").val();
+var obj = {
+"id":bookId,
+"bookTitle":bookTitle,
+"bookAuthor":bookAuthor,
+"bookCondition":bookCondition,
+"bookQuantity":bookQuantity,
+"bookDateAdded":bookDateAdded
+}
+$.ajax({
+url: '/api/Book/UpdateBook',
+type: "PUT",
+'contentType': 'application/json',
+dataType: "json",
+data: JSON.stringify(obj),
+success: function(data) {
+    var id = $("#UpdateBookId").val();
+    var Title = $("#UpdateBookTitle").val();
+    var Author = $("#UpdateBookAuthor").val();
+    var Condition = $("#UpdateBookCondition").val();
+    var Quantity = $("#UpdateBookQuantity").val();
+    var Date = $("#UpdateBookDate").val();
+
+    $("#bookTitle" + id).html(Title);
+    $("#bookAuthor" + id).html(Author);
+    $("#bookCondition" + id).html(Condition);
+    $("#bookQuantity" + id).html(Quantity);
+    $("#bookDateAdded" + id).html(Date);
+
+    $("#UpdatebookTitle").val('');
+    $("#UpdateBookAuthor").val('');
+    $("#UpdateBookCondition").val('');
+    $("#UpdateBookQuantity").val('');
+    $("#UpdateBookDate").val('');
+}
+})
+
+})
+
+
+//Delete Publication
+
+$(document).on('click', '.btnDelete', function() {
+var bookId = $(this).attr('id');
+bookId = bookId.replace("btnDelete", "");
+
+//alert(bookId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+var obj = { "id": bookId };
+
+$.ajax({
+    url: '/api/Book/DeleteBook?id=' + bookId,
+    type: "DELETE",
+                   
+    success: function(data) {
+
+        $('#btnDelete' + obj.id).closest('tr').remove();
+        $('.tdSrNo').each(function(index, obj) {
+            $(this).html(index + 1);
+        });
+        alert("Deleted Successfully");
+    },
+    error: function(xhr, status, error) {
+        console.log(error);
+        alert("Error occurred: " + error);
+    }
+});
+}
+});
+})
+</script>

@@ -1,0 +1,455 @@
+﻿@{
+    ViewData["Title"] = "IssueBook";
+}
+@{
+    Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roll Number Selection</title>
+    <style>
+        .side-by-side {
+          display: inline-block;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="modal " id="updateStudent">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Issue Book</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+
+                <!--Update table-->
+                <div class="table-responsive">
+                    <table class="table table-borderless text-center">
+                        <tr class="side-by-side">
+                            <td>
+                                <input type="text" id="UpdateissueId" hidden readonly name="UpdateissueId" />
+                            </td>
+                        </tr>
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="departmentName" class="fs-5 form-label">Department Name:</label> <br />
+                                <select id="UpdDepartmentId" class=" form-control input-rounded text-center fs-4 mx-auto  border border-dark"> <option value="">Select Department</option></select>
+                            </td>
+                        </tr>
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="RollNumber" class="fs-5 form-label">Roll Number:</label> <br />
+                                <select id="UpdRollNumber" class=" form-control input-rounded text-center fs-4  mx-auto  border border-dark"><option value="">Select Roll Number</option> </select>
+                            </td>
+                        </tr>
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="RollNumber" class="fs-5 form-label">Book:</label> <br />
+                                <select id="UpdBookId" class=" form-control input-rounded text-center fs-4  mx-auto  border border-dark"> <option value="">Select Book</option></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="fs-5">Date&Time:</label>
+                                <input class="form-control input-rounded text-center fs-4  mx-auto  border border-dark" type="datetime-local" id="UpdIssueDate" name="IssueDate" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-danger light" id="btnCancelIssueBook" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateIssueBook">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Add issue book-->
+    <button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target=".issueBook">Issue Book</button>
+    <div class="modal fade  issueBook" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-borderless text-center">
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="departmentName" class="fs-5 form-label">Department Name:</label> <br />
+                                <select id="DepartmentId" class=" form-control input-rounded text-center fs-4 mx-auto  border border-dark"> <option value="">Select Department</option></select>
+                            </td>
+                        </tr>
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="RollNumber" class="fs-5 form-label">Roll Number:</label> <br />
+                                <select id="RollNumber"  class=" form-control input-rounded text-center fs-4  mx-auto  border border-dark"> <option value="">Select Roll Number</option></select>
+                            </td>
+                        </tr>
+                        <tr class="side-by-side">
+                            <td>
+                                <label for="RollNumber" class="fs-5 form-label">Book:</label> <br />
+                                <select id="BookId" class=" form-control input-rounded text-center fs-4  mx-auto  border border-dark"> <option value="">Select Book</option></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="fs-5">Date&Time:</label>
+                                <input class="form-control input-rounded text-center fs-4  mx-auto  border border-dark" type="datetime-local" id="IssueDate" name="IssueDate" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="issueBooks" data-bs-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>Issue Book</h2>
+    @*<div>
+    <label for="DepartmentId">Department:</label>
+    <select id="DepartmentId">
+    <option value="">Select Department</option>
+    </select>
+    </div>*@
+
+    @* <div>
+    <label for="RollNumber">Roll Number:</label>
+    <select id="RollNumber" name="RollNumber">
+    <option value="">Select Roll Number</option>
+    </select>
+    </div>*@
+    @* <div>
+    <label for="Book">Select Book:</label>
+    <select id="BookId" name="BookId">
+    <option value="">Select Book</option>
+    </select>
+    </div>*@
+
+    <!--List of All Issue Books-->
+    <div class="col-lg-12 my-3">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">List of All Issue Book</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th><strong>SrNO.</strong></th>
+                                <th><strong>Department Name</strong></th>
+                                <th><strong>Student RollNo.</strong></th>
+                                <th><strong>Student Name</strong></th>
+                                <th><strong>Session</strong></th>
+                                <th><strong>Book Name</strong></th>
+                                <th><strong>Issue Date</strong></th>
+                                <th><strong></strong></th>
+                            </tr>
+                        </thead>
+                        <tbody id="issueBookData">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            var srN = 0;
+            var issueId;
+            var updateIssueId;
+            GetIssueData()
+            // Retrieve department list
+            $.ajax({
+                url: '/api/Department/GetAllDepartments',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log(data);
+
+                    var trData = "";
+                    $.each(data, function(index, obj) {
+                        trData += `
+                                        <option value="${obj.id}">${obj.departmentName}</option>
+                                        `
+                    });
+                    $('#DepartmentId').html(trData);
+                    $("#UpdDepartmentId").html(trData);
+                   
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            //Handle department change event
+            $('#DepartmentId').change(function() {
+
+                var departmentId = $("#DepartmentId").val();
+                //console.log("this" + departmentId)
+                $.ajax({
+                    url: '/api/Student/GetRollNumbersByDepartmentId',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        departmentId: departmentId
+                    },
+                    success: function(data) {
+                       // console.log(data);
+                        var trData = "";
+                        $.each(data, function(index, obj) {
+                            trData += `
+                                           <option value="${obj}">${obj}</option>
+                                           `
+                        });
+
+                        $('#RollNumber').html(trData);
+                        //$('#UpdRollNumber').html(trData);
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+            //
+
+
+            //Handle department change event
+            $('#UpdDepartmentId').change(function() {
+
+                var departmentId = $("#UpdDepartmentId").val();
+                //console.log("this" + departmentId)
+                $.ajax({
+                    url: '/api/Student/GetRollNumbersByDepartmentId',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        departmentId: departmentId
+                    },
+                    success: function(data) {
+                        //console.log(data);
+                        var trData = "";
+                        $.each(data, function(index, obj) {
+                            trData += `
+                                           <option value="${obj}">${obj}</option>
+                                           `
+                        });
+                         
+                        //$('#RollNumber').html(trData);
+                        $('#UpdRollNumber').html(trData);
+                          // Set the selected value for UpdRollNumber
+            var currentRollNumber = $('#rollnumber' + issueId).text();
+            $('#UpdRollNumber').val(currentRollNumber);
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+
+            // Retrieve Book list
+            $.ajax({
+                url: '/api/Book/GetAllBooks',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log(data);
+                    var trData = "";
+                    $.each(data, function(index, obj) {
+                        trData += `
+                                        <option value="${obj.id}">${obj.bookTitle}</option>
+                                        `
+                    });
+                    $('#BookId').html(trData);
+                    $('#UpdBookId').html(trData);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            //Retrieve Issue Book List
+            function GetIssueData() {
+                $.ajax({
+                    url: '/api/IssueBook/GetAllIssuedData',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        //console.log(data);
+                        var trData = "";
+                        $.each(data, function(index, obj) {
+                            srN += 1;
+                            trData += `
+                                        <tr>
+                                        <td class='tdSrNo'>${srN}</td>
+                                        <td id="departmentId${obj.id}" style="display: none;">${obj.departmentId}</td>
+                                        <td id='departmentName${obj.id}'>${obj.departmentName}</td>
+                                        <td id="studentId${obj.id}" style="display: none;">${obj.studentId}</td>
+                                        <td id="rollnumber${obj.id}">${obj.rollNumber}</td>
+                                        <td id="fullName${obj.id}">${obj.fullName}</td>
+                                        <td id="session${obj.id}">${obj.session}</td>
+                                        <td id="bookId${obj.id}" style="display: none;">${obj.bookId}</td>
+                                        <td id="bookName${obj.id}">${obj.bookName}</td>
+                                        <td id="issueDate${obj.id}">${obj.issueDate}</td>
+                                          <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateStudent' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
+                        <button  class='btn   btn-danger btnDelete mx-2 my-1' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+                                        </tr>
+                                        `
+                        });
+                        //console.log("this is" + JSON.stringify(data));
+                        $('#issueBookData').html(trData);
+                        $('.tdSrNo').each(function(index, obj) {
+                            $(this).html(index + 1);
+                        });
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                })
+            }
+
+
+
+            //Add Issue Book
+            $("#issueBooks").click(function() {
+                var DepartmentId = $("#DepartmentId").val();
+                var studentId = $("#RollNumber").val();
+                // var RollNumber = $("#RollNumber").val();
+                var roll = $("#rollnumber").val();
+                var BookId = $("#BookId").val();
+                var IssueDate = $("#IssueDate").val();
+                var obj = {
+                    "departmentId": DepartmentId,
+                    "studentId": studentId,
+                    "rollNumber": roll,
+                    "bookId": BookId,
+                    "issueDate": IssueDate
+                }
+                alert(JSON.stringify(obj));
+                $.ajax({
+                    url: '/api/IssueBook/AddIssueBook',
+                    type: "POST",
+                    'contentType': 'application/json',
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    success: function(data) {
+                        //console.log(data);
+                        GetIssueData();
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log(xhr.responseText);
+                        alert('Error:' + textStatus);
+                    }
+
+                })
+            })
+
+            //Update Issue Book
+            $(document).on('click', '.btnEdit', function() {
+                 issueId = $(this).attr('id');
+                issueId = issueId.replace("btnEdit", "");
+                //alert("this is " + issueId);
+
+                var DepartmentId = $("#departmentId" + issueId).html();
+                var departmentName=$("#departmentName" + issueId).html();
+                var studentId = $("#studentId" + issueId).html();
+                var RollNumber = $("#rollnumber" + issueId).html();
+                var BookId = $("#bookId" + issueId).html();
+                var BookName = $("#bookName" + issueId).html();
+                var IssueDate = $("#issueDate" + issueId).html();
+               //console.log(RollNumber);
+
+              updateIssueId = issueId;
+                $('#UpdateissueId').val(issueId);
+                $("#UpdDepartmentId").val(DepartmentId);
+                 $('#UpdDepartmentId').trigger('change');
+                $("#UpdRollNumber").val(RollNumber);
+                $("#UpdBookId").val(BookId);
+                $("#UpdIssueDate").val(IssueDate);
+                
+            })
+
+            $("#btnUpdateIssueBook").click(function(){
+                var departmentName = $("#UpdDepartmentId").val();
+                var rollNumber = $("#UpdRollNumber").val();
+                var bookName = $("#UpdBookId").val();
+                var issueDate = $("#UpdIssueDate").val();
+                var obj = {
+                    "id":updateIssueId,
+                    "departmentId": departmentName,
+                    "studentId": rollNumber,
+                    "bookId": bookName,
+                    "issueDate": issueDate
+                }
+               alert(JSON.stringify(obj));
+                $.ajax({
+            url: '/api/IssueBook/UpdateIssueBook',
+            type: "PUT",
+            'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+                 success: function(data) {
+                     GetIssueData();
+                     console.log(data);
+                     alert("updated successfully")
+                 }
+             })
+            })
+
+
+            //Delete Issue book
+            $(document).on('click', '.btnDelete', function() {
+                 issueId = $(this).attr('id');
+                issueId = issueId.replace("btnDelete", "");
+
+                // alert(departmentId);
+                if (confirm("It will be deleted permanently. Are you sure?")) {
+                    var obj = { "id": issueId };
+
+                    $.ajax({
+                        url: '/api/IssueBook/DeleteIssueBook?id=' + issueId,
+                        type: "DELETE",
+                        success: function(data) {
+
+                            $('#btnDelete' + obj.id).closest('tr').remove();
+                            $('.tdSrNo').each(function(index, obj) {
+                                $(this).html(index + 1);
+                            });
+                            alert("Deleted Successfully");
+                            GetIssueData()
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                            alert("Error occurred: " + error);
+                        }
+                    });
+                }
+            });
+
+            //end
+        });
+    </script>
+</body>
+</html>
+

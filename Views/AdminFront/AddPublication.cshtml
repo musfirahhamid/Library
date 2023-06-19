@@ -1,0 +1,303 @@
+﻿@{
+ViewData["Title"] = "AddPublication";
+}
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+
+<!-- Update Publication-->
+<div class="modal " id="exampleModalCenter">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update Publication</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdatepublicationId" hidden readonly name="UpdatepublicationId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Title:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="text" id="UpdatepublicationTitle" name="UpdatepublicationTitle" placeholder="Enter Title" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Author:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto border border-dark" type="text" id="UpdatepublicationAuthor" name="UpdatepublicationAuthor" placeholder="Author Name" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Date&Time:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="datetime-local" id="UpdatepublicationDate" name="UpdatepublicationDate" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelPublication" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdatePublication">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!--    __________________________________________________________________________________________________________    -->
+<!--Add Publication-->
+
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end"  data-bs-toggle="modal" data-bs-target="#basicModal">Add Publication</button>
+
+<div class="modal fade" id="basicModal">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Add Publication</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="table-responsive">
+        <table class="table table-borderless text-center" id="tblInsert">
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Title:</label>
+                    <input type="text" id="publicationTitle" name="publicationTitle" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Title" />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Author:</label>
+                    <input type="text" id="publicationAuthor" name="publicationAuthor" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Author Name" />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Date&Time:</label>
+                    <input type="datetime-local" id="publicationDate" name="publicationDate" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" />
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddPublication" name="btnAddPublication">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All Publication -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+<div class="card-header">
+<h4 class="card-title">List of All Publication</h4>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <th><strong>SrNO.</strong></th>
+                <th><strong>Title</strong></th>
+                <th><strong>Author</strong></th>
+                <th><strong>Date</strong></th>
+                <th><strong></strong></th>
+            </tr>
+        </thead>
+        <tbody id="tblData">
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+var srN = 0;
+//Get All Publication
+$.ajax({
+url: '/api/Publication/GetAllPublication',
+type: 'GET',
+dataType: "json",
+success: function(data) {
+    var trData = "";
+    $.each(data, function(index, obj) {
+        srN += 1;
+        trData += "<tr><td class='tdSrNo'>" + srN + "</td><td id='publicationTitle" + obj.id + "'>" + obj.publicationTitle + "</td><td id='publicationAuthor" + obj.id + "'>" + obj.publicationAuthor + "</td><td id='publicationDate" + obj.id + "'>" + obj.publicationDate + "</td><td> <button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#exampleModalCenter' id='btnEdit" + obj.id + "'><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete" + obj.id + "'><i class='fas fa-trash'></i></button> </td></tr>"
+        $('#tblData').html(trData);
+
+    })
+
+}
+})
+
+
+//addPublication
+
+$("#btnAddPublication").click(function() {
+var publicationTitle = $("#publicationTitle").val();
+var publicationAuthor = $("#publicationAuthor").val();
+var publicationDate = $("#publicationDate").val();
+var obj = {
+    "publicationTitle": publicationTitle,
+    "publicationAuthor": publicationAuthor,
+    "publicationDate": publicationDate
+}
+
+$.ajax({
+
+    url: '/api/Publication/AddPublication',
+    type: "POST",
+    'contentType': 'application/json',
+    dataType: "json",
+    data: JSON.stringify(obj),
+    success: function(data) {
+
+        srN += 1;
+
+        $('#tblData').append(
+            `
+			<tr>
+			<td class='tdSrNo'>${srN}</td>
+			<td id="publicationTitle${obj.id}">${obj.publicationTitle}</td>
+			<td id="publicationAuthor${obj.id}">${obj.publicationAuthor}</td>
+			<td id="publicationDate${obj.id}">${obj.publicationDate}</td>
+			<td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#exampleModalCenter' id='btnEdit'${obj.id}><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete'${obj.id}><i class='fas fa-trash'></i></button></td>
+			</tr>
+			`
+        )
+        $('.tdSrNo').each(function(index, obj) {
+            $(this).html(index + 1);
+        });
+
+        $('#publicationTitle').val('');
+        $('#publicationAuthor').val('');
+        $('#publicationDate').val('');
+    }
+})
+})
+
+
+//Edit Publication
+//$("#tblUpdate").hide();
+
+$("#btnUpdatePublication").click(function() {
+$("#exampleModalCenter").hide();
+})
+
+$(document).on('click', '.btnEdit', function() {
+$("#tblUpdate").show();
+// $("#tblInsert").hide();
+
+var publicationId = $(this).attr('id');
+publicationId = publicationId.replace("btnEdit", "");
+alert(publicationId)
+var publicationTitle = $("#publicationTitle" + publicationId).html();
+var publicationAuthor = $("#publicationAuthor" + publicationId).html();
+var publicationDate = $("#publicationDate" + publicationId).html();
+alert("pId" + " " + publicationId + " " + publicationTitle + " " + publicationAuthor + " " + publicationDate);
+
+$("#UpdatepublicationId").val(publicationId);
+$('#UpdatepublicationTitle').val(publicationTitle);
+$('#UpdatepublicationAuthor').val(publicationAuthor);
+$('#UpdatepublicationDate').val(publicationDate);
+})
+
+$("#btnUpdatePublication").click(function() {
+var publicationId = $("#UpdatepublicationId").val();
+var publicationTitle = $("#UpdatepublicationTitle").val();
+var publicationAuthor = $("#UpdatepublicationAuthor").val();
+var publicationDate = $("#UpdatepublicationDate").val();
+var obj = {
+    "id": publicationId,
+    "publicationTitle": publicationTitle,
+    "publicationAuthor": publicationAuthor,
+    "publicationDate": publicationDate
+}
+//alert(JSON.stringify(obj));
+$.ajax({
+    url: '/api/Publication/UpdatePublication',
+    type: "PUT",
+    'contentType': 'application/json',
+    dataType: "json",
+    data: JSON.stringify(obj),
+    success: function(data) {
+        var id = $("#UpdatepublicationId").val();
+        var Title = $("#UpdatepublicationTitle").val();
+        var Author = $("#UpdatepublicationAuthor").val();
+        var Date = $("#UpdatepublicationDate").val();
+
+        $("#publicationTitle" + id).html(Title);
+        $("#publicationAuthor" + id).html(Author);
+        $("#publicationDate" + id).html(Date);
+
+        $("#UpdatepublicationTitle").val('');
+        $("#UpdatepublicationAuthor").val('');
+        $("#UpdatepublicationDate").val('');
+    }
+})
+
+})
+$("#btnCancelPublication").click(function() {
+$("#tblUpdate").hide();
+})
+
+//Delete Publication
+
+$(document).on('click', '.btnDelete', function() {
+var publicationId = $(this).attr('id');
+publicationId = publicationId.replace("btnDelete", "");
+
+// alert(publicationId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": publicationId };
+
+    $.ajax({
+        url: '/api/Publication/DeletePublication?id=' + publicationId,
+        type: "DELETE",
+        contentType: 'application/json',
+        dataType: "json",
+        data: JSON.stringify(obj),
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+})
+</script>
+

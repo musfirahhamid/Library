@@ -1,0 +1,384 @@
+﻿
+@{
+    ViewData["Title"] = "AllStudentData";
+}
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+
+<h1>AllStudentData</h1>
+
+<!-- Update Publication-->
+<div class="modal " id="updateStudent">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update Student</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdateStudentId" hidden readonly name="UpdateStudentId" />
+            </td>
+        </tr>
+         <table class="table table-borderless text-center" id="tblInsert">
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Roll Number:</label>
+                            <input type="text" id="UpdRollNumber" name="UpdRollNumber" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Roll Number" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Student Name:</label>
+                            <input type="text" id="UpdFullName" name="UpdFullName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Full Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Father Name:</label>
+                            <input type="text" id="UpdFatherName" name="UpdFatherName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Father Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                           <label for="departmentName" class="fs-5 form-label">Department Name:</label> <br />
+                           <select id="UpdlstDepName" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Session:</label>
+                            <input type="number"  id="UpdSession" name="UpdSession" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Session" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Gender:</label>
+                            <input type="text" id="UpdGender" name="UpdGender" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="gender" />
+                        </td>
+                    </tr>
+
+                </table>
+       
+        
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelStudent" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateStudent">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<!--    __________________________________________________________________________________________________________    -->
+<!--Add Publication-->
+
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#addDepartment">Add Student</button>
+
+<div class="modal fade" id="addDepartment">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Publication</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal">
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="table-responsive">
+                <table class="table table-borderless text-center" id="tblInsert">
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Roll Number:</label>
+                            <input type="text" id="rollNumber" name="rollNumber" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Roll Number" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Student Name:</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Full Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Father Name:</label>
+                            <input type="text" id="fatherName" name="fatherName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Father Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                           <label for="departmentName" class="fs-5 form-label">Department Name:</label> <br />
+                           <select id="lstDepName" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Session:</label>
+                            <input type="number" id="session" name="session" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Session" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Gender:</label>
+                            <input type="text" id="gender" name="gender" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="gender" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddStudent" name="btnAddDepartment">Save changes</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All Publication -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">List of All Students</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-responsive-md">
+                <thead>
+                    <tr>
+                        <th><strong>SrNO.</strong></th>
+                        <th><strong>RollNumber</strong></th>
+                        <th><strong>Full Name</strong></th>
+                        <th><strong>Father Name</strong></th>
+                        <th><strong>Department</strong></th>
+                        <th><strong>Session</strong></th>
+                        <th><strong>Gender</strong></th>
+                        <th><strong></strong></th>
+                    </tr>
+                </thead>
+                <tbody id="studentData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+@*<table>
+     <tr>
+        <td>
+            <label for="departmentName">Department Name:</label> <br />
+            <select id="lstDepName"></select>
+        </td>
+       </tr>
+</table>*@
+
+<script>
+   
+    $(document).ready(function(){
+        var srN = 0;
+        var updateStudentId = 0;
+        
+        GetStudentData();
+
+        //get departments list
+
+        $.ajax({
+        url: '/api/Department/GetAllDepartments',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index, obj) { 
+                //srN+=1;
+                trData+=`
+                <option   value="${obj.id}">${obj.departmentName}</option>
+                `
+                //trData += "<option value='"+ obj.id+"'>"+obj.departmentName+"</option>";
+            })
+            $("#lstDepName").html(trData);
+            $("#UpdlstDepName").html(trData);
+            }
+    });
+
+
+        //get all students
+        function GetStudentData() { 
+         $.ajax({
+            url: '/api/Student/GetStudentsWithDepartment',
+        type: 'GET',
+        dataType: "json",
+            success: function(data) {
+                var trData = "";
+                 srN = 0;
+                $.each(data, function(index,obj) {
+                srN += 1;
+                    trData += `
+                <tr>
+               
+                <td class='tdSrNo'>${srN}</td>
+                <td id='rollNumber${obj.id}'>${obj.rollNumber}</td>
+                <td id='fullName${obj.id}'>${obj.fullName}</td>
+                <td id='fatherName${obj.id}'>${obj.fatherName}</td>
+                <td id="departmentId${obj.id}" style="display: none;">${obj.departmentId}</td>
+                <td id='departmentName${obj.id}'>${obj.departmentName}</td>
+                <td id='session${obj.id}'>${obj.session}</td>
+                <td id='gender${obj.id}'>${obj.gender}</td>
+                <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateStudent' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
+                <button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+                </tr>
+                `;
+                })
+               
+                 $("#studentData").html(trData);
+
+            }
+        })
+        }
+       
+
+        //Add Student
+        $("#btnAddStudent").click(function() {
+            var rollNumber = $("#rollNumber").val();
+            var fullName = $("#fullName").val();
+            var fatherName = $("#fatherName").val();
+            var departmentId = $("#lstDepName").val();
+            var session = $("#session").val();
+            var gender = $("#gender").val();
+            //alert(departmentId);
+            var obj = {
+                "rollNumber":rollNumber,
+                "fullName":fullName,
+                "fatherName":fatherName,
+                "departmentId":departmentId,
+                "session":session,
+                "gender":gender
+            }
+           
+            alert(JSON.stringify(obj));
+
+            $.ajax({
+            url: '/api/Student/AddStudent',
+            type: "POST",
+            'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+            success: function(data) {
+                console.log(data);
+                    GetStudentData();
+                },
+            error: function(xhr, textStatus, errorThrown) {
+            console.log(xhr.responseText);
+            alert('Error:' + textStatus);
+        }
+
+            })
+        })
+
+
+        //Update Student
+        $(document).on('click','.btnEdit',function(){
+            var studentId = $(this).attr('id');
+            studentId = studentId.replace("btnEdit", "");
+            alert("this is "+studentId);
+
+            
+            var rollNumber=$("#rollNumber" + studentId).html();
+            var fullName=$("#fullName" + studentId).html();
+            var fatherName=$("#fatherName" + studentId).html();
+            var departmentId = $("#departmentId" + studentId).html();
+            var departmentName=$("#departmentName" + studentId).html();
+            var session=$("#session" + studentId).html();
+            var gender=$("#gender" + studentId).html();
+           
+            updateStudentId = studentId;
+
+            $("#UpdRollNumber").val(rollNumber);
+            $("#UpdFullName").val(fullName);
+            $("#UpdFatherName").val(fatherName);
+            $("#UpdlstDepName").val(departmentId);
+            $("#UpdSession").val(session);
+            $("#UpdGender").val(gender);
+        })
+
+        $("#btnUpdateStudent").click(function() {
+            var rollNumber = $("#UpdRollNumber").val();
+            var fullName = $("#UpdFullName").val();
+            var fatherName = $("#UpdFatherName").val();
+            var departmentId = $("#UpdlstDepName").val();
+            var session = $("#UpdSession").val();
+            var gender = $("#UpdGender").val();
+            var obj = {
+                "rollNumber":rollNumber,
+                "fullName":fullName,
+                "fatherName":fatherName,
+                "departmentId":departmentId,
+                "session":session,
+                "gender":gender,
+                "id":updateStudentId
+            }
+             $.ajax({
+            url: '/api/Student/UpdateStudent',
+            type: "PUT",
+            'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+                 success: function(data) {
+                     GetStudentData();
+                     alert("updated successfully")
+                 }
+             })
+
+        })
+
+        //Delete
+        $(document).on('click', '.btnDelete', function() {
+var studentId = $(this).attr('id');
+studentId = studentId.replace("btnDelete", "");
+
+// alert(departmentId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": studentId };
+
+    $.ajax({
+        url: '/api/Student/DeleteStudent?id=' + studentId,
+        type: "DELETE",
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+            GetStudentData()
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+        //end
+    })
+</script>

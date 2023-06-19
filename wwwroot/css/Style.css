@@ -1,0 +1,114 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    transition: left 0.3s ease-in-out;
+
+}
+
+ul {
+    margin-top: 60px;
+    margin-left:10px;
+}
+.menu {
+    list-style-type: none;
+    padding: 0;
+    
+}
+
+    .menu li {
+        padding: 10px;
+        
+    }
+
+        .menu li a {
+            text-decoration: none;
+            color: #4d3092;
+        }
+
+.content {
+    margin-left: 0;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.open-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.theme-toggle {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    
+    color: var(--theme-color);
+    border: none;
+    cursor: pointer;
+}
+
+
+.light-mode {
+    --sidebar-bg-color: #f2e8ff ;
+    --menu-link-color: #4d3092;
+}
+
+.dark-mode {
+    --sidebar-bg-color: #325453;
+    --menu-link-color: #ffffff;
+}
+
+.sidebar {
+    background-color: var(--sidebar-bg-color);
+}
+
+.menu li a {
+    color: var(--menu-link-color);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        left: -100%;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+}
+
+/* button for main page*/
+button.myButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #325453;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button.myButton:hover {
+        background-color: #517174;
+    }

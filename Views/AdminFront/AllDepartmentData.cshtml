@@ -1,0 +1,249 @@
+﻿@{
+ViewData["Title"] = "AllDepartmentData";
+}
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<h1>AllDepartmentData</h1>
+
+<!-- Update Publication-->
+<div class="modal " id="updateDepartment">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update Department</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdateDepartmentId" hidden readonly name="UpdateDepartmentId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Title:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="text" id="UpdateDepartmentName" name="UpdateDepartmentName" placeholder="Department Name" />
+            </td>
+        </tr>
+       
+        
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelDepartment" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateDepartment">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!--    __________________________________________________________________________________________________________    -->
+<!--Add Publication-->
+
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#addDepartment">Add Department</button>
+
+<div class="modal fade" id="addDepartment">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Publication</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal">
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="table-responsive">
+                <table class="table table-borderless text-center" id="tblInsert">
+                    <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Department Name:</label>
+                            <input type="text" id="departmentName" name="departmentName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Department Name" />
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddDepartment" name="btnAddDepartment">Save changes</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All Publication -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">List of All Department</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-responsive-md">
+                <thead>
+                    <tr>
+                        <th><strong>SrNO.</strong></th>
+                        <th><strong>Department Name</strong></th>
+                        <th><strong></strong></th>
+                    </tr>
+                </thead>
+                <tbody id="departmentData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    var srN = 0;
+
+    $.ajax({
+        url: '/api/Department/GetAllDepartments',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index, obj) {
+                srN += 1;
+                trData += `
+                <tr>
+                <td class="tdSrNo">${srN}</td>
+                <td id="departmentName${obj.id}">${obj.departmentName}</td>
+                <td>
+                <button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateDepartment' id='btnEdit${obj.id}'><i class='fas fa-pencil-alt'></i></button>
+                <button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button>
+                </td>
+                </tr>
+                `
+                $("#departmentData").html(trData);
+                $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            })
+        }
+    })
+
+    //Add Department
+    $("#btnAddDepartment").click(function() {
+        var departmentName = $("#departmentName").val();
+        var obj = {
+            "departmentName": departmentName
+        }
+        $.ajax({
+            url: '/api/Department/AddDepartment',
+            type: "POST",
+            'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+            success: function(data) {
+                srN += 1;
+                $("#departmentData").append(
+                    `
+                    <tr>
+                <td class="tdSrNo">${srN}</td>
+                <td id="departmentName${obj.id}">${obj.departmentName}</td>
+                <td>
+                <button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateDepartment' id='btnEdit${obj.id}'><i class='fas fa-pencil-alt'></i></button>
+                <button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button>
+                </td>
+                </tr>
+                    `
+                )
+                console.log(data);
+                $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+                $('#departmentName').val('');
+            }
+        })
+    })
+
+
+    //Update Department
+
+    $(document).on('click', '.btnEdit', function() {
+        var departmentId = $(this).attr('id');
+        departmentId = departmentId.replace("btnEdit", "");
+        //alert(departmentId);
+
+        $("#UpdateDepartmentId").val(departmentId);
+        var departmentName = $("#departmentName"+departmentId).html();
+        $("#UpdateDepartmentName").val(departmentName)
+    })
+
+    $("#btnUpdateDepartment").click(function() {
+
+        var departmentId = $("#UpdateDepartmentId").val();
+        var departmentName = $("#UpdateDepartmentName").val();
+        var obj = {
+            "id":departmentId,
+            "departmentName":departmentName
+        }
+        //alert(JSON.stringify(obj))
+        $.ajax({
+    url: '/api/Department/UpdateDepartment',
+    type: "PUT",
+    'contentType': 'application/json',
+    dataType: "json",
+    data: JSON.stringify(obj),
+    success: function(data) {
+        var id = $("#UpdateDepartmentId").val();
+        var Name = $("#UpdateDepartmentName").val();
+       
+        $("#departmentName" + id).html(Name);
+        $("#departmentName").val('');
+  
+    }
+})
+    })
+
+    //Delete Publication
+
+$(document).on('click', '.btnDelete', function() {
+var departmentId = $(this).attr('id');
+departmentId = departmentId.replace("btnDelete", "");
+
+// alert(departmentId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": departmentId };
+
+    $.ajax({
+        url: '/api/Department/DeleteDepartment?id=' + departmentId,
+        type: "DELETE",
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+})
+</script>
