@@ -9,6 +9,6 @@
            // public int RollNumber { get; set; }
             public int BookId { get; set; }
             public DateTime IssueDate { get; set; }
-            public int AvailableBooks { get; set; }
+           // public int AvailableBooks { get; set; }
         }
     }

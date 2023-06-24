@@ -73,7 +73,7 @@ Layout = "~/Views/Shared/theme.cshtml";
 
 <!--  __________________________________________________________________________________________________________    -->
 <!-- Add Book-->
-<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#addBook">Add Publication</button>
+<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#addBook">Add Book</button>
 
 <div class="modal fade" id="addBook">
 <div class="modal-dialog" role="document">
@@ -147,7 +147,8 @@ Layout = "~/Views/Shared/theme.cshtml";
             <th><strong>Book Title</strong></th>
             <th><strong>Book Author</strong></th>
             <th><strong>Condition</strong></th>
-            <th><strong>Quantity</strong></th>
+            <th><strong>Total Quantity</strong></th>
+            <th><strong>Available Quantity</strong></th>
             <th><strong>Date</strong></th>
             <th><strong></strong></th>
         </tr>
@@ -164,9 +165,10 @@ Layout = "~/Views/Shared/theme.cshtml";
 <script>
 $(document).ready(function() {
 var srN = 0;
-
+GetAllBooks()
 //Get All Books
-$.ajax({
+    function GetAllBooks() {
+        $.ajax({
 url: '/api/Book/GetAllBooks',
 type: 'GET',
 dataType: "json",
@@ -182,6 +184,7 @@ $.each(data, function(index, obj) {
             <td id="bookAuthor${obj.id}">${obj.bookAuthor}</td>
             <td id="bookCondition${obj.id}">${obj.bookCondition}</td>
             <td id="bookQuantity${obj.id}">${obj.bookQuantity}</td>
+            <td id="bookAvailable${obj.id}">${obj.availableBooks}</td>
             <td id="bookDateAdded${obj.id}">${obj.bookDateAdded}</td>
             <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateBook' id='btnEdit${obj.id}'><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
         </tr>
@@ -191,12 +194,15 @@ $.each(data, function(index, obj) {
 }
 
 })
+    }
+
 
 
 //Add Book
+    var bookAvailable;
 $("#btnAddBook").click(function() {
 alert("added");
-var bookTitle = $("#bookAuthor").val();
+var bookTitle = $("#bookTitle").val();
 var bookAuthor = $("#bookAuthor").val();
 var bookCondition = $("#bookCondition").val();
 var bookQuantity = $("#bookQuantity").val();
@@ -217,17 +223,19 @@ dataType: "json",
 data: JSON.stringify(obj),
 success: function(data) {
 srN += 1;
-$("#bookData").append(`
-<tr>
-        <td class='tdSrNo'>${srN}</td>
-        <td id="bookTitle${obj.id}">${obj.bookTitle}</td>
-        <td id="bookAuthor${obj.id}">${obj.bookAuthor}</td>
-        <td id="bookCondition${obj.id}">${obj.bookCondition}</td>
-        <td id="bookQuantity${obj.id}">${obj.bookQuantity}</td>
-        <td id="bookDateAdded${obj.id}">${obj.bookDateAdded}</td>
-        <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateBook' id='btnEdit'${obj.id}><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
-    </tr>
-`)
+    GetAllBooks();
+//$("#bookData").append(`
+//<tr>
+//        <td class='tdSrNo'>${srN}</td>
+//        <td id="bookTitle${obj.id}">${obj.bookTitle}</td>
+//        <td id="bookAuthor${obj.id}">${obj.bookAuthor}</td>
+//        <td id="bookCondition${obj.id}">${obj.bookCondition}</td>
+//        <td id="bookQuantity${obj.id}">${obj.bookQuantity}</td>
+//        <td id="bookAvailable${obj.id}">${obj.availableBooks}</td>
+//        <td id="bookDateAdded${obj.id}">${obj.bookDateAdded}</td>
+//        <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateBook' id='btnEdit'${obj.id}><i class='fas fa-pencil-alt'></i></button><button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+//    </tr>
+//`)
     $('.tdSrNo').each(function(index, obj) {
         $(this).html(index + 1);
     });

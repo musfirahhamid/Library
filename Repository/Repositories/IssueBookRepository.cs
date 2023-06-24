@@ -15,19 +15,19 @@ namespace Library.Repository.Repositories
             {
             issueBook.Status = true;
             _context.issueBooks.Add(issueBook);
-            _context.SaveChanges();
+            
 
             // Update the available book quantity in the Book table
             Book book = _context.books.FirstOrDefault(b => b.Id == issueBook.BookId);
             if(book != null)
                 {
+              
                 book.AvailableBooks--;
                 _context.SaveChanges();
                 }
 
             // Update the available book quantity in the IssueBook table
-            issueBook.AvailableBooks--;
-            _context.SaveChanges();
+            
 
             return issueBook;
             }

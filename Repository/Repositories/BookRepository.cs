@@ -15,13 +15,14 @@ namespace Library.Repository.Repositories
 
         public List<Book> GetAllBooks()
             {
-            return _context.books.Where(row=>row.Status==true && row.BookQuantity>0).ToList();
+            return _context.books.Where(row=>row.Status==true && row.AvailableBooks>0).ToList();
             }
 
 
         public Book AddBook(Book book)
             {
             book.Status = true;
+            book.AvailableBooks = book.BookQuantity;
             _context.books.Add(book);
             _context.SaveChanges();
             return book;
