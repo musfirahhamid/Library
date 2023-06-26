@@ -31,5 +31,17 @@ namespace Library.Controllers.AdminModule.Frontend
             {
             return View();
             }
+        public ActionResult Permission()
+            {
+            return View();
+            }
+        public ActionResult UserRole()
+            {
+            return View();
+            }
+        public ActionResult AssignRole()
+            {
+            return View();
+            }
         }
     }

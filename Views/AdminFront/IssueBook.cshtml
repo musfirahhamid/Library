@@ -216,7 +216,7 @@
                         var trData = "";
                         $.each(data, function(index, obj) {
                             trData += `
-                                           <option value="${obj}">${obj}</option>
+                            <option value="${obj}">${obj}</option>
                                            `
                         });
 
@@ -317,7 +317,7 @@
                                         </tr>
                                         `
                         });
-                        //console.log("this is" + JSON.stringify(data));
+                        console.log("this is" + JSON.stringify(data));
                         $('#issueBookData').html(trData);
                         $('.tdSrNo').each(function(index, obj) {
                             $(this).html(index + 1);
@@ -335,18 +335,16 @@
             $("#issueBooks").click(function() {
                 var DepartmentId = $("#DepartmentId").val();
                 var studentId = $("#RollNumber").val();
-                // var RollNumber = $("#RollNumber").val();
-                var roll = $("#rollnumber").val();
                 var BookId = $("#BookId").val();
                 var IssueDate = $("#IssueDate").val();
-                var obj = {
-                    "departmentId": DepartmentId,
+                var obj = { 
+                 "departmentId": DepartmentId,
                     "studentId": studentId,
-                    "rollNumber": roll,
                     "bookId": BookId,
                     "issueDate": IssueDate
                 }
-                alert(JSON.stringify(obj));
+                //alert(JSON.stringify(obj));
+                console.log(obj)
                 $.ajax({
                     url: '/api/IssueBook/AddIssueBook',
                     type: "POST",
@@ -354,7 +352,7 @@
                     dataType: "json",
                     data: JSON.stringify(obj),
                     success: function(data) {
-                        //console.log(data);
+                        console.log(data);
                         GetIssueData();
                     },
                     error: function(xhr, textStatus, errorThrown) {

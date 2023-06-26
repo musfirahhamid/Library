@@ -42,6 +42,8 @@ namespace Library.Controllers.AdminModule
                 RollNumber = s.RollNumber,
                 Session = s.Session,
                 Status=s.Status,
+                EMail=s.Email,
+                Password=s.Password,
                 DepartmentName = iStudent.GetDepartmentName(s.DepartmentId),
                 DepartmentId= s.DepartmentId
                 });

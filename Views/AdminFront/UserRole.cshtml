@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewData["Title"] = "UserRole";
+}
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+<h1>UserRole</h1>
+
+
+<div class="modal " id="exampleModalCenter">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update UserRole</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdateuserRoleId" hidden readonly name="UpdateuserRoleId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Url:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto border border-dark" type="text" id="UpdateuserRole" name="UpdateuserRole" placeholder="Url" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelUserRole" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateUserRole">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--    __________________________________________________________________________________________________________    -->
+<!--Add Publication-->
+
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end"  data-bs-toggle="modal" data-bs-target="#userRole">Add User Role</button>
+
+<div class="modal fade" id="userRole">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Add User Role</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="table-responsive">
+        <table class="table table-borderless text-center" id="tblInsert">
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Title:</label>
+                    <input type="text" id="roleName" name="roleName" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="roleName" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddRole" name="btnAddRole">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All Pemission -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+<div class="card-header">
+<h4 class="card-title">List of All User Role</h4>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <th><strong>SrNO.</strong></th>
+                <th><strong>User Role</strong></th>
+                <th><strong></strong></th>
+            </tr>
+        </thead>
+        <tbody id="tblData">
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var srN = 0;
+    var UpdPermission;
+    GetAllUserRole();
+
+    //get all permission
+    function  GetAllUserRole() {
+         $.ajax({
+        url: '/api/UserRole/GetAllUserRoles',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index,obj) {
+                srN += 1;
+                trData+=`
+                <tr>
+                <td class="tdSrNo">${srN}</td>
+                <td id="uId${obj.id}" style="display: none;">${obj.id}</td>
+                <td id="roleName${obj.id}">${obj.roleName}</td>
+                 <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#exampleModalCenter' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
+                 <button  class='btn   btn-danger btnDelete mx-2 my-1' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+                </tr>
+                `
+            })
+            $("#tblData").html(trData);
+               $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+           
+        }
+    })
+    }
+   
+    //add permission
+    $("#btnAddRole").click(function(){
+        var roleName = $("#roleName").val();
+        var obj = {
+            "roleName":roleName
+        }
+        $.ajax({
+               url: '/api/UserRole/AddUserRole',
+                type: "POST",
+                'contentType': 'application/json',
+                dataType: "json",
+                data: JSON.stringify(obj),
+            success: function(data) {
+                GetAllUserRole();
+            }
+        })
+    })
+
+    //update permission
+    $(document).on('click', '.btnEdit', function() {
+        var uId=$(this).attr('id');
+        uId=uId.replace("btnEdit", "");
+          var roleName = $("#roleName" + uId).html();
+       //alert(roleName + uId)
+        $("#UpdateuserRole").val(roleName);
+      $("#UpdateuserRoleId").val(uId);
+    })
+    $("#btnUpdateUserRole").click(function() {
+        var uId = $("#UpdateuserRoleId").val();
+        var roleName = $("#UpdateuserRole").val();
+        var obj = {
+            "id":uId,
+            "roleName":roleName,
+        }
+        //alert(JSON.stringify(obj))
+        $.ajax({
+            url: '/api/UserRole/UpdateUserRole',
+            type: "PUT",
+           'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+            success: function(data) {
+                GetAllUserRole();
+            }
+        })
+    })
+
+
+    //delete permission
+ $(document).on('click', '.btnDelete', function() {
+var uId = $(this).attr('id');
+uId = uId.replace("btnDelete", "");
+
+// alert(publicationId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": uId };
+
+    $.ajax({
+        url: '/api/UserRole/DeleteUserRole?id=' + uId,
+        type: "DELETE",
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+    //end
+ 
+})
+</script>

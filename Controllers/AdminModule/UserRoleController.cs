@@ -47,7 +47,8 @@ namespace Library.Controllers.AdminModule
             }
 
         // DELETE api/<UserRoleController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("DeleteUserRole")]
         public void Delete(int id)
             {
             iUserRole.DeleteUserRole(id);

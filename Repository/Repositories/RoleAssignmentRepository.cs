@@ -32,12 +32,12 @@ namespace Library.Repository.Repositories
 
         public List<RoleAssignment> GetAllRoleAssignment()
             {
-           return _context.roleAssignments.ToList();
+           return _context.roleAssignments.Where(x => x.Status == true).ToList();
             }
 
         public List<RoleAssignment> GetAllRoleAssignmentData()
             {
-            return _context.roleAssignments.ToList();
+            return _context.roleAssignments.Where(x=>x.Status==true).ToList();
             }
 
         public string GetPermissionTitle(int permissionId)

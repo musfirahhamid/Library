@@ -62,7 +62,8 @@ namespace Library.Controllers.AdminModule
             }
 
         // DELETE api/<RoleAssignmentController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("DeleteRoleAssignment")]
         public void Delete(int id)
             {
             iRoleAssignment.DeleteRoleAssignment(id);

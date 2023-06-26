@@ -15,7 +15,7 @@ namespace Library.Repository.Repositories
             {
             issueBook.Status = true;
             _context.issueBooks.Add(issueBook);
-            
+            _context.SaveChanges();
 
             // Update the available book quantity in the Book table
             Book book = _context.books.FirstOrDefault(b => b.Id == issueBook.BookId);
@@ -80,23 +80,19 @@ namespace Library.Repository.Repositories
                .FirstOrDefault();
             }
 
-        public IssueBook GetIssueBookbyId(int id)
-            {
-            throw new NotImplementedException();
-            }
-
-        public int GetRollNumber(int studentId)
+       
+        public int GetRollNumber(int StudentId)
             {
             return _context.students
-               .Where(d => d.RollNumber == studentId && d.Status == true)
+               .Where(d => d.RollNumber ==  StudentId && d.Status == true)
                .Select(d => d.RollNumber)
                .FirstOrDefault();
             }
 
-        public int GetSession(int studentId)
+        public int GetSession(int StudentId)
             {
             return _context.students
-               .Where(d => d.RollNumber == studentId && d.Status == true)
+               .Where(d => d.RollNumber == StudentId && d.Status == true)
                .Select(d => d.Session)
                .FirstOrDefault();
             }
@@ -108,5 +104,11 @@ namespace Library.Repository.Repositories
             _context.SaveChanges();
             return issueBook;
             }
+
+        public IssueBook GetIssueBookbyId(int id)
+            {
+            throw new NotImplementedException();
+            }
+
         }
     }

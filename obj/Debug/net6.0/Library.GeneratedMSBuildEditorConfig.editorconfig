@@ -31,8 +31,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Gcm9udFxBbGxTdHVkZW50RGF0YS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Library/Views/AdminFront/AssignRole.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Gcm9udFxBc3NpZ25Sb2xlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Library/Views/AdminFront/IssueBook.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Gcm9udFxJc3N1ZUJvb2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Library/Views/AdminFront/Permission.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Gcm9udFxQZXJtaXNzaW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Library/Views/AdminFront/UserRole.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Gcm9udFxVc2VyUm9sZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Library/Views/Home/Index.cshtml]

@@ -138,6 +138,18 @@ Layout = "~/Views/Shared/theme.cshtml";
                             <input type="text" id="gender" name="gender" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="gender" />
                         </td>
                     </tr>
+                      <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Email:</label>
+                            <input type="email" id="email" name="gemailender" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="email" />
+                        </td>
+                    </tr>
+                      <tr>
+                        <td class="text-center">
+                            <label class="fs-5">Password:</label>
+                            <input type="text" id="password" name="password" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="password" />
+                        </td>
+                    </tr>
 
                 </table>
             </div>
@@ -153,7 +165,7 @@ Layout = "~/Views/Shared/theme.cshtml";
 
 
 <!--  __________________________________________________________________________________________________________    -->
-<!-- List of All Publication -->
+<!-- List of All Students -->
 
 <div class="col-lg-12 my-3">
 <div class="card">
@@ -172,6 +184,8 @@ Layout = "~/Views/Shared/theme.cshtml";
                         <th><strong>Department</strong></th>
                         <th><strong>Session</strong></th>
                         <th><strong>Gender</strong></th>
+                        <th><strong>Email</strong></th>
+                        <th><strong>Password</strong></th>
                         <th><strong></strong></th>
                     </tr>
                 </thead>
@@ -183,14 +197,6 @@ Layout = "~/Views/Shared/theme.cshtml";
 </div>
 </div>
 
-@*<table>
-     <tr>
-        <td>
-            <label for="departmentName">Department Name:</label> <br />
-            <select id="lstDepName"></select>
-        </td>
-       </tr>
-</table>*@
 
 <script>
    
@@ -243,6 +249,8 @@ Layout = "~/Views/Shared/theme.cshtml";
                 <td id='departmentName${obj.id}'>${obj.departmentName}</td>
                 <td id='session${obj.id}'>${obj.session}</td>
                 <td id='gender${obj.id}'>${obj.gender}</td>
+                <td id='email${obj.id}'>${obj.eMail}</td>
+                <td id='password${obj.id}'>${obj.password}</td>
                 <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#updateStudent' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
                 <button  class='btn   btn-danger btnDelete mx-2' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
                 </tr>
@@ -264,6 +272,8 @@ Layout = "~/Views/Shared/theme.cshtml";
             var departmentId = $("#lstDepName").val();
             var session = $("#session").val();
             var gender = $("#gender").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
             //alert(departmentId);
             var obj = {
                 "rollNumber":rollNumber,
@@ -271,7 +281,9 @@ Layout = "~/Views/Shared/theme.cshtml";
                 "fatherName":fatherName,
                 "departmentId":departmentId,
                 "session":session,
-                "gender":gender
+                "gender":gender,
+                "eMail":email,
+                "password":password
             }
            
             alert(JSON.stringify(obj));

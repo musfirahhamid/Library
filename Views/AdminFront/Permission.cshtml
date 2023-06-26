@@ -1,0 +1,243 @@
+﻿
+@{
+    ViewData["Title"] = "Permission";
+}
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+
+<div class="modal " id="exampleModalCenter">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update Permission</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdatepermissionId" hidden readonly name="UpdatepermissionId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Title:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" type="text" id="UpdatepermissionTitle" name="UpdatepermissionTitle" placeholder="Enter Title" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label class="fs-5">Url:</label>
+                <input class="form-control input-rounded text-center fs-4 w-75 mx-auto border border-dark" type="text" id="UpdatepermissionUrl" name="UpdatepermissionUrl" placeholder="Url" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelPermission" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdatePermission">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--    __________________________________________________________________________________________________________    -->
+<!--Add Publication-->
+
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end"  data-bs-toggle="modal" data-bs-target="#permission">Add Permission</button>
+
+<div class="modal fade" id="permission">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Add Permission</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+<div class="modal-body">
+
+    <div class="table-responsive">
+        <table class="table table-borderless text-center" id="tblInsert">
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Title:</label>
+                    <input type="text" id="permissionTitle" name="permissionTitle" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Title" />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <label class="fs-5">Url:</label>
+                    <input type="text" id="permissionUrl" name="permissionUrl" class="form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark" placeholder="Url" />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAddPermission" name="btnAddPermission">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All Pemission -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+<div class="card-header">
+<h4 class="card-title">List of All Permission</h4>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <th><strong>SrNO.</strong></th>
+                <th><strong>Title</strong></th>
+                <th><strong>URL</strong></th>
+                <th><strong></strong></th>
+            </tr>
+        </thead>
+        <tbody id="tblData">
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var srN = 0;
+    var UpdPermission;
+    GetAllPermission();
+
+    //get all permission
+    function GetAllPermission() {
+         $.ajax({
+        url: '/api/Permission/GetAllPermissions',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index,obj) {
+                srN += 1;
+                trData+=`
+                <tr>
+                <td class="tdSrNo">${srN}</td>
+                <td id="pId${obj.id}" style="display: none;">${obj.id}</td>
+                <td id="permissionTitle${obj.id}">${obj.permissionTitle}</td>
+                <td id="permissionUrl${obj.id}">${obj.permissionUrl}</td>
+                 <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#exampleModalCenter' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
+                 <button  class='btn   btn-danger btnDelete mx-2 my-1' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+                </tr>
+                `
+                 
+            })
+             $("#tblData").html(trData);
+           $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+           
+        }
+    })
+    }
+   
+    //add permission
+    $("#btnAddPermission").click(function(){
+        var permissionTitle = $("#permissionTitle").val();
+        var permissionUrl = $("#permissionUrl").val();
+        var obj = {
+            "permissionTitle":permissionTitle,
+            "permissionUrl":permissionUrl
+        }
+        $.ajax({
+               url: '/api/Permission/AddPermission',
+                type: "POST",
+                'contentType': 'application/json',
+                dataType: "json",
+                data: JSON.stringify(obj),
+            success: function(data) {
+                  GetAllPermission();
+            }
+        })
+    })
+
+    //update permission
+    $(document).on('click', '.btnEdit', function() {
+        var pId=$(this).attr('id');
+        pId=pId.replace("btnEdit", "");
+          var permissionTitle = $("#permissionTitle" + pId).html();
+        var permissionUrl = $("#permissionUrl" + pId).html();
+        alert(permissionUrl + permissionTitle)
+        $("#UpdatepermissionTitle").val(permissionTitle);
+        $("#UpdatepermissionUrl").val(permissionUrl);
+      $("#UpdatepermissionId").val(pId);
+    })
+    $("#btnUpdatePermission").click(function() {
+        var pId = $("#UpdatepermissionId").val();
+        var permissionTitle = $("#UpdatepermissionTitle").val();
+        var permissionUrl = $("#UpdatepermissionUrl").val();
+        var obj = {
+            "id":pId,
+            "permissionTitle":permissionTitle,
+            "permissionUrl":permissionUrl
+        }
+        alert(JSON.stringify(obj))
+        $.ajax({
+            url: '/api/Permission/UpdatePermission',
+            type: "PUT",
+           'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+            success: function(data) {
+                GetAllPermission();
+            }
+        })
+    })
+
+
+    //delete permission
+ $(document).on('click', '.btnDelete', function() {
+var pId = $(this).attr('id');
+pId = pId.replace("btnDelete", "");
+
+// alert(publicationId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": pId };
+
+    $.ajax({
+        url: '/api/Permission/DeletePermission?id=' + pId,
+        type: "DELETE",
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+    //end
+ 
+})
+</script>

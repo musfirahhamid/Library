@@ -52,11 +52,6 @@ namespace Library.Controllers.AdminModule
             return Ok(issueBookData);
             }
 
-
-
-
-
-        // GET api/<IssueBookController>/5
        
 
         // POST api/<IssueBookController>

@@ -1,0 +1,296 @@
+﻿
+@{
+    ViewData["Title"] = "AssignRole";
+}
+
+<h1>AssignRole</h1>
+@{
+Layout = "~/Views/Shared/theme.cshtml";
+}
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+<div class="modal " id="exampleModalCenter">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+    <h5 class="modal-title">Update Assign Role</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal">
+    </button>
+</div>
+
+
+<!--Update table-->
+<div class="table-responsive">
+    <table class="table table-borderless text-center" id="tblUpdate">
+        <tr>
+            <td>
+                <input type="text" id="UpdateRoleAssignId" hidden readonly name="UpdateRoleAssignId" />
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label for="UserRole" class="fs-5 form-label">User Role</label> <br />
+                <select id="UpdlstUserRole" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <label for="Permission" class="fs-5 form-label">Permission</label> <br />
+                <select id="UpdlstPermission" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+            </td>
+        </tr>
+        
+    </table>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger light" id="btnCancelPublication" data-bs-dismiss="modal">Close</button>
+    <button class="btn btn-primary" data-bs-dismiss="modal" id="btnUpdateAssignRole">Save changes</button>
+</div>
+</div>
+</div>
+</div>
+
+<!--    __________________________________________________________________________________________________________    -->
+<!-- Assign Role-->
+
+<button type="button" class="btn btn-primary mx-2 my-3 float-end" data-bs-toggle="modal" data-bs-target="#assignRole">Assign Role</button>
+
+<div class="modal fade" id="assignRole">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Assign Role</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal">
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="table-responsive">
+                <table class="table table-borderless text-center" id="tblInsert">
+                     <tr>
+                        <td class="text-center">
+                           <label for="UserRole" class="fs-5 form-label">User Role</label> <br />
+                           <select id="lstUserRole" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                           <label for="Permission" class="fs-5 form-label">Permission</label> <br />
+                           <select id="lstPermission" class=" form-control input-rounded text-center fs-4 w-75 mx-auto  border border-dark"></select>
+                        </td>
+                    </tr>
+ 
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger light" data-bs-dismiss="modal" id="btnCancel">Close</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="btnAssignRole" name="btnAssignRole">Save changes</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--  __________________________________________________________________________________________________________    -->
+<!-- List of All AssignRole -->
+
+<div class="col-lg-12 my-3">
+<div class="card">
+<div class="card-header">
+<h4 class="card-title">List of All User Role</h4>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <th><strong>SrNO.</strong></th>
+                <th><strong>User Role</strong></th>
+                <th><strong>Permission Title</strong></th>
+                <th><strong>Permission URL</strong></th>
+                <th><strong></strong></th>
+            </tr>
+        </thead>
+        <tbody id="tblData">
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    var srN = 0;
+    var UpdAssignRole;
+    GetAllAssignRole();
+
+    //get all userRole
+        $.ajax({
+        url: '/api/UserRole/GetAllUserRoles',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index, obj) { 
+                //srN+=1;
+                trData+=`
+                <option   value="${obj.id}">${obj.roleName}</option>
+                `
+            })
+            $("#lstUserRole").html(trData);
+            $("#UpdlstUserRole").html(trData);
+            }
+    });
+
+     //get all Permission
+        $.ajax({
+        url: '/api/Permission/GetAllPermissions',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index, obj) { 
+                //srN+=1;
+                trData+=`
+                <option   value="${obj.id}">${obj.permissionTitle}</option>
+                ` 
+            })
+            $("#lstPermission").html(trData);
+            $("#UpdlstPermission").html(trData);
+            }
+    });
+
+    //get all permission
+    function  GetAllAssignRole() {
+         $.ajax({
+        url: '/api/RoleAssignment/GetAllRoleAssignmentData',
+        type: 'GET',
+        dataType: "json",
+        success: function(data) {
+            var trData = "";
+            $.each(data, function(index,obj) {
+                srN += 1;
+                trData+=`
+                <tr>
+                <td class="tdSrNo">${srN}</td>
+                <td id="rId${obj.id}" style="display: none;">${obj.id}</td>
+                <td id="uId${obj.id}" style="display: none;">${obj.uId}</td>
+                <td id="pId${obj.id}" style="display: none;">${obj.pId}</td>
+                <td id="roleName${obj.id}">${obj.userRole}</td>
+                 <td id="permissionTitle${obj.id}">${obj.permissionTitle}</td>
+                <td id="permissionUrl${obj.id}">${obj.permissionUrl}</td>
+                 <td><button  class='btnEdit btn  btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#exampleModalCenter' id="btnEdit${obj.id}"><i class='fas fa-pencil-alt'></i></button>
+                 <button  class='btn   btn-danger btnDelete mx-2 my-1' id='btnDelete${obj.id}'><i class='fas fa-trash'></i></button></td>
+                </tr>
+                `
+            })
+           
+            $("#tblData").html(trData);
+               $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+           
+        }
+    })
+    }
+   
+    //add AssignRole
+    $("#btnAssignRole").click(function(){
+        var userRole = $("#lstUserRole").val();
+        var permissionTitle = $("#lstPermission").val();
+
+        var obj = {
+            "idUser":userRole,
+            "idPermission":permissionTitle
+        }
+        alert(JSON.stringify(obj))
+        $.ajax({
+               url: '/api/RoleAssignment/AddRoleAssignment',
+                type: "POST",
+                'contentType': 'application/json',
+                dataType: "json",
+                data: JSON.stringify(obj),
+            success: function(data) {
+                 console.log(data);
+                GetAllAssignRole();
+            }
+        })
+    })
+
+    //update AssignRole
+    $(document).on('click', '.btnEdit', function() {
+        var rId=$(this).attr('id');
+        rId=rId.replace("btnEdit", "");
+
+        var uId = $("#uId" + rId).html();
+        var roleName = $("#roleName" + rId).html();
+       
+        var pId = $("#pId" + rId).html();
+        var permissionTitle = $("#permissionTitle" + rId).html();
+        alert(uId+roleName+pId+permissionTitle)
+        UpdAssignRole = rId;
+        $("#UpdlstUserRole").val(uId);
+        $("#UpdlstPermission").val(pId);
+    })
+
+    $("#btnUpdateAssignRole").click(function() {
+        //var rId = $("#UpdateRoleAssignId").val();
+        var uId = $("#UpdlstUserRole").val();
+        var pId = $("#UpdlstPermission").val();
+        var roleName = $("#UpdateuserRole").val();
+        var obj = {
+            "id":UpdAssignRole,
+            "idUser":uId,
+            "idPermission":pId
+        }
+        alert(JSON.stringify(obj))
+        $.ajax({
+            url: '/api/RoleAssignment/UpdateRoleAssignment',
+            type: "PUT",
+           'contentType': 'application/json',
+            dataType: "json",
+            data: JSON.stringify(obj),
+            success: function(data) {
+                console.log(data);
+                GetAllAssignRole();
+            }
+        })
+    })
+
+
+    //delete permission
+ $(document).on('click', '.btnDelete', function() {
+var uId = $(this).attr('id');
+uId = uId.replace("btnDelete", "");
+
+// alert(publicationId);
+if (confirm("It will be deleted permanently. Are you sure?")) {
+    var obj = { "id": uId };
+
+    $.ajax({
+        url: '/api/RoleAssignment/DeleteRoleAssignment?id=' + uId,
+        type: "DELETE",
+        success: function(data) {
+
+            $('#btnDelete' + obj.id).closest('tr').remove();
+            $('.tdSrNo').each(function(index, obj) {
+                $(this).html(index + 1);
+            });
+            alert("Deleted Successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Error occurred: " + error);
+        }
+    });
+}
+});
+
+    //end
+ 
+})
+</script>

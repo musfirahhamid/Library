@@ -1,13 +1,45 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+<script src="/lib/jquery/dist/jquery.min.js"></script>
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    <button class="myButton" id="myPublication">Click Me</button>
-     <button class="myButton" id="myButton">Click Me</button>
-      <button class="myButton" id="myButton">Click Me</button>
+    <button class="myButton" id="Publication">Publication</button>
+     <button class="myButton" id="Book">Book</button>
+      <button class="myButton" id="Student">Student</button>
+      <button class="myButton" id="Department">Department</button>
+      <button class="myButton" id="IssueBook">Issue Book</button>
+       <button class="myButton" id="Permission">Permission</button>
+        <button class="myButton" id="UserRole">UserRole</button>
+        <button class="myButton" id="AssignRole">Assign Role</button>
 
 </div>
+<script>
+$("#Publication").click(function() { 
+window.location="/AdminFront/AddPublication"
+})
+$("#Book").click(function() { 
+window.location="/AdminFront/AllBookData"
+})   
+$("#Student").click(function() { 
+window.location="/AdminFront/AllStudentData"
+})  
+$("#Department").click(function() { 
+window.location="/AdminFront/AllDepartmentData"
+}) 
+$("#IssueBook").click(function() { 
+window.location="/AdminFront/IssueBook"
+}) 
+$("#Permission").click(function() { 
+window.location="/AdminFront/Permission"
+}) 
+$("#UserRole").click(function() { 
+window.location="/AdminFront/UserRole"
+}) 
+$("#AssignRole").click(function() { 
+window.location="/AdminFront/AssignRole"
+}) 
+    
+</script>
